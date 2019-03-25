@@ -8,6 +8,8 @@ import (
 	"net/url"
 )
 
+type Method string
+
 // Supported HTTP verbs.
 const (
 	Get    Method = "GET"
