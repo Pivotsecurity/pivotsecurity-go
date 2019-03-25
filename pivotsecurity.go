@@ -1,4 +1,3 @@
-// Package rest allows for quick and easy access any REST or REST-like API.
 package pivotsecurity
 
 import (
@@ -8,10 +7,8 @@ import (
 	"net/url"
 )
 
-// Method contains the supported HTTP verbs.
 type Method string
 
-// Supported HTTP verbs.
 const (
 	Get    Method = "GET"
 	Post   Method = "POST"
@@ -20,7 +17,6 @@ const (
 	Delete Method = "DELETE"
 )
 
-// Request holds the request to an API Call.
 type Request struct {
 	Method      Method
 	BaseURL     string // e.g. https://api.pivotsecurity.com
@@ -29,34 +25,26 @@ type Request struct {
 	Body        []byte
 }
 
-// RestError is a struct for an error handling.
 type RestError struct {
 	Response *Response
 }
 
-// Error is the implementation of the error interface.
 func (e *RestError) Error() string {
 	return e.Response.Body
 }
 
-// DefaultClient is used if no custom HTTP client is defined
 var DefaultClient = &Client{HTTPClient: http.DefaultClient}
 
-// Client allows modification of client headers, redirect policy
-// and other settings
-// See https://golang.org/pkg/net/http
 type Client struct {
 	HTTPClient *http.Client
 }
 
-// Response holds the response from an API call.
 type Response struct {
 	StatusCode int                 // e.g. 200
 	Body       string              // e.g. {"result: success"}
 	Headers    map[string][]string // e.g. map[X-Ratelimit-Limit:[600]]
 }
 
-// AddQueryParameters adds query parameters to the URL.
 func AddQueryParameters(baseURL string, queryParams map[string]string) string {
 	baseURL += "?"
 	params := url.Values{}
@@ -66,9 +54,7 @@ func AddQueryParameters(baseURL string, queryParams map[string]string) string {
 	return baseURL + params.Encode()
 }
 
-// BuildRequestObject creates the HTTP request object.
 func BuildRequestObject(request Request) (*http.Request, error) {
-	// Add any query parameters to the URL.
 	if len(request.QueryParams) != 0 {
 		request.BaseURL = AddQueryParameters(request.BaseURL, request.QueryParams)
 	}
@@ -83,15 +69,15 @@ func BuildRequestObject(request Request) (*http.Request, error) {
 	if len(request.Body) > 0 && !exists {
 		req.Header.Set("Content-Type", "application/json")
 	}
+	req.method := "POST"
+
 	return req, err
 }
 
-// MakeRequest makes the API call.
 func MakeRequest(req *http.Request) (*http.Response, error) {
 	return DefaultClient.HTTPClient.Do(req)
 }
 
-// BuildResponse builds the response struct.
 func BuildResponse(res *http.Response) (*Response, error) {
 	body, err := ioutil.ReadAll(res.Body)
 	response := Response{
@@ -103,32 +89,23 @@ func BuildResponse(res *http.Response) (*Response, error) {
 	return &response, err
 }
 
-// Deprecated: API supports old implementation
 func API(request Request) (*Response, error) {
 	return Send(request)
 }
 
-// Send uses the DefaultClient to send your request
 func Send(request Request) (*Response, error) {
 	return DefaultClient.Send(request)
 }
 
-// The following functions enable the ability to define a
-// custom HTTP Client
-
-// MakeRequest makes the API call.
 func (c *Client) MakeRequest(req *http.Request) (*http.Response, error) {
 	return c.HTTPClient.Do(req)
 }
 
-// Deprecated: API supports old implementation
 func (c *Client) API(request Request) (*Response, error) {
 	return c.Send(request)
 }
 
-// Send will build your request, make the request, and build your response.
 func (c *Client) Send(request Request) (*Response, error) {
-	// Build the HTTP request object.
 	req, err := BuildRequestObject(request)
 	if err != nil {
 		return nil, err
@@ -143,3 +120,4 @@ func (c *Client) Send(request Request) (*Response, error) {
 	// Build Response object.
 	return BuildResponse(res)
 }
+
