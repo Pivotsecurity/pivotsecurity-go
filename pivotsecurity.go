@@ -5,7 +5,25 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os"
+	"encoding/base64"
 )
+
+const host = "http://localhost:8080/api/"
+
+const OP_CREATE= host + "account/create";
+const OP_INFO = host + "account/info";
+const OP_RISK_SCORE = host + "account/riskscore";
+const OP_UPDATE_RISK_SCORE = host + "account/updateriskscore";
+const OP_QRCODE = host + "account/qrcode";
+const OP_AUTH_CODE = host + "account/authcode";
+const OP_LOGS = host + "account/logs";
+const OP_LOCK = host + "account/lock";
+const OP_UNLOCK = host + "account/unlock";
+const OP_TRAIN_ML = host + "account/trainml";
+const OP_TEST_ML = host + "account/testml";
+const OP_AUTH = host + "customer/auth";
+const OP_VALIDATE = host + "customer/verify";
 
 type Method string
 
@@ -55,9 +73,10 @@ func AddQueryParameters(baseURL string, queryParams map[string]string) string {
 }
 
 func BuildRequestObject(request Request) (*http.Request, error) {
-	if len(request.QueryParams) != 0 {
-		request.BaseURL = AddQueryParameters(request.BaseURL, request.QueryParams)
-	}
+	request.Method = "POST"
+	//if len(request.QueryParams) != 0 { // not used
+	//	request.BaseURL = AddQueryParameters(request.BaseURL, request.QueryParams)
+	//}
 	req, err := http.NewRequest(string(request.Method), request.BaseURL, bytes.NewBuffer(request.Body))
 	if err != nil {
 		return req, err
@@ -69,8 +88,6 @@ func BuildRequestObject(request Request) (*http.Request, error) {
 	if len(request.Body) > 0 && !exists {
 		req.Header.Set("Content-Type", "application/json")
 	}
-	req.method := "POST"
-
 	return req, err
 }
 
@@ -111,13 +128,204 @@ func (c *Client) Send(request Request) (*Response, error) {
 		return nil, err
 	}
 
-	// Build the HTTP client and make the request.
 	res, err := c.MakeRequest(req)
 	if err != nil {
 		return nil, err
 	}
 
-	// Build Response object.
 	return BuildResponse(res)
+}
+
+func privateAuth() string {
+  auth := "Basic " + os.Getenv("PRIVATE_API_KEY") +":"
+   return base64.StdEncoding.EncodeToString([]byte(auth))
+}
+func publicAuth() string {
+  auth := "Basic " + os.Getenv("PUBLIC_API_KEY") +":"
+   return base64.StdEncoding.EncodeToString([]byte(auth))
+}
+
+// Account and Customer methods
+func Create(uid string, email string, channel string) (*Response, error) {
+	Headers := make(map[string]string)
+	auth := base64.StdEncoding.EncodeToString([]byte(os.Getenv("PRIVATE_API_KEY") +":"))
+	Headers["Authorization"] = "Basic " + auth
+	var Body = []byte(`{"uid":"`+ uid +`", "email":"` + email +`", "channel":"` + channel + `"}`)
+	
+	request := Request{
+		BaseURL:     OP_CREATE,
+		Headers:     Headers,
+		Body:        Body,
+	}
+	
+	return Send(request)
+}
+func Info(uid string, email string) (*Response, error) {
+	Headers := make(map[string]string)
+	auth := base64.StdEncoding.EncodeToString([]byte(os.Getenv("PRIVATE_API_KEY") +":"))
+	Headers["Authorization"] = "Basic " + auth
+	var Body = []byte(`{"uid":"`+ uid +`", "email":"` + email +`"}`)
+	
+	request := Request{
+		BaseURL:     OP_INFO,
+		Headers:     Headers,
+		Body:        Body,
+	}
+	
+	return Send(request)
+}
+func Riskscore(uid string, email string) (*Response, error) {
+	Headers := make(map[string]string)
+	auth := base64.StdEncoding.EncodeToString([]byte(os.Getenv("PRIVATE_API_KEY") +":"))
+	Headers["Authorization"] = "Basic " + auth
+	var Body = []byte(`{"uid":"`+ uid +`", "email":"` + email +`"}`)
+	
+	request := Request{
+		BaseURL:     OP_RISK_SCORE,
+		Headers:     Headers,
+		Body:        Body,
+	}
+	
+	return Send(request)
+}
+func UpdateRiskscore(uid string, email string, riskscore string) (*Response, error) {
+	Headers := make(map[string]string)
+	auth := base64.StdEncoding.EncodeToString([]byte(os.Getenv("PRIVATE_API_KEY") +":"))
+	Headers["Authorization"] = "Basic " + auth
+	var Body = []byte(`{"uid":"`+ uid +`", "email":"` + email +`", "riskscore":"` + riskscore + `"}`)
+	
+	request := Request{
+		BaseURL:     OP_UPDATE_RISK_SCORE,
+		Headers:     Headers,
+		Body:        Body,
+	}
+	
+	return Send(request)
+}
+func QRCode(uid string, email string) (*Response, error) {
+	Headers := make(map[string]string)
+	auth := base64.StdEncoding.EncodeToString([]byte(os.Getenv("PRIVATE_API_KEY") +":"))
+	Headers["Authorization"] = "Basic " + auth
+	var Body = []byte(`{"uid":"`+ uid +`", "email":"` + email +`"}`)
+	
+	request := Request{
+		BaseURL:     OP_QRCODE,
+		Headers:     Headers,
+		Body:        Body,
+	}
+	
+	return Send(request)
+}
+func AuthCode(uid string, email string) (*Response, error) {
+	Headers := make(map[string]string)
+	auth := base64.StdEncoding.EncodeToString([]byte(os.Getenv("PRIVATE_API_KEY") +":"))
+	Headers["Authorization"] = "Basic " + auth
+	var Body = []byte(`{"uid":"`+ uid +`", "email":"` + email +`"}`)
+	
+	request := Request{
+		BaseURL:     OP_AUTH_CODE,
+		Headers:     Headers,
+		Body:        Body,
+	}
+	
+	return Send(request)
+}
+func Logs(uid string, email string) (*Response, error) {
+	Headers := make(map[string]string)
+	auth := base64.StdEncoding.EncodeToString([]byte(os.Getenv("PRIVATE_API_KEY") +":"))
+	Headers["Authorization"] = "Basic " + auth
+	var Body = []byte(`{"uid":"`+ uid +`", "email":"` + email +`"}`)
+	
+	request := Request{
+		BaseURL:     OP_LOGS,
+		Headers:     Headers,
+		Body:        Body,
+	}
+	
+	return Send(request)
+}
+func Lock(uid string, email string) (*Response, error) {
+	Headers := make(map[string]string)
+	auth := base64.StdEncoding.EncodeToString([]byte(os.Getenv("PRIVATE_API_KEY") +":"))
+	Headers["Authorization"] = "Basic " + auth
+	var Body = []byte(`{"uid":"`+ uid +`", "email":"` + email +`"}`)
+	
+	request := Request{
+		BaseURL:     OP_LOCK,
+		Headers:     Headers,
+		Body:        Body,
+	}
+	
+	return Send(request)
+}
+func Unlock(uid string, email string) (*Response, error) {
+	Headers := make(map[string]string)
+	auth := base64.StdEncoding.EncodeToString([]byte(os.Getenv("PRIVATE_API_KEY") +":"))
+	Headers["Authorization"] = "Basic " + auth
+	var Body = []byte(`{"uid":"`+ uid +`", "email":"` + email +`"}`)
+	
+	request := Request{
+		BaseURL:     OP_UNLOCK,
+		Headers:     Headers,
+		Body:        Body,
+	}
+	
+	return Send(request)
+}
+func TrainMl(uid string, email string, data string) (*Response, error) {
+	Headers := make(map[string]string)
+	auth := base64.StdEncoding.EncodeToString([]byte(os.Getenv("PRIVATE_API_KEY") +":"))
+	Headers["Authorization"] = "Basic " + auth
+	var Body = []byte(`{"uid":"`+ uid +`", "email":"` + email +`", "data":"` + data + `"}`)
+	
+	request := Request{
+		BaseURL:     OP_TRAIN_ML,
+		Headers:     Headers,
+		Body:        Body,
+	}
+	
+	return Send(request)
+}
+func TestMl(uid string, email string, data string) (*Response, error) {
+	Headers := make(map[string]string)
+	auth := base64.StdEncoding.EncodeToString([]byte(os.Getenv("PRIVATE_API_KEY") +":"))
+	Headers["Authorization"] = "Basic " + auth
+	var Body = []byte(`{"uid":"`+ uid +`", "email":"` + email +`", "data":"` + data + `"}`)
+	
+	request := Request{
+		BaseURL:     OP_TEST_ML,
+		Headers:     Headers,
+		Body:        Body,
+	}
+	
+	return Send(request)
+}
+func Auth(uid string, email string) (*Response, error) {
+	Headers := make(map[string]string)
+	auth := base64.StdEncoding.EncodeToString([]byte(os.Getenv("PUBLIC_API_KEY") +":"))
+	Headers["Authorization"] = "Basic " + auth
+	var Body = []byte(`{"uid":"`+ uid +`", "email":"` + email +`"}`)
+	
+	request := Request{
+		BaseURL:     OP_AUTH,
+		Headers:     Headers,
+		Body:        Body,
+	}
+	
+	return Send(request)
+}
+func Validate(uid string, email string) (*Response, error) {
+	Headers := make(map[string]string)
+	auth := base64.StdEncoding.EncodeToString([]byte(os.Getenv("PUBLIC_API_KEY") +":"))
+	Headers["Authorization"] = "Basic " + auth
+	var Body = []byte(`{"uid":"`+ uid +`", "email":"` + email +`"}`)
+	
+	request := Request{
+		BaseURL:     OP_VALIDATE,
+		Headers:     Headers,
+		Body:        Body,
+	}
+	
+	return Send(request)
 }
 
