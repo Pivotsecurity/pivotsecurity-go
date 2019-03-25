@@ -37,7 +37,7 @@ Update the development environment with your [SENDGRID_API_KEY](https://app.send
 
 ```bash
 echo "export PUBLIC_API_KEY='YOUR_PUBLIC_API_KEY'" > pivotsecurity.env
-echo "export PPRIVATE_API_KEY='YOUR_PRIVATE_API_KEY'" > pivotsecurity.env
+echo "export PRIVATE_API_KEY='YOUR_PRIVATE_API_KEY'" > pivotsecurity.env
 echo "pivotsecurity.env" >> .gitignore
 source ./pivotsecurity.env
 ```
