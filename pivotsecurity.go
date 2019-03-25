@@ -8,6 +8,7 @@ import (
 	"net/url"
 )
 
+// Method contains the supported HTTP verbs.
 type Method string
 
 // Supported HTTP verbs.
@@ -22,7 +23,7 @@ const (
 // Request holds the request to an API Call.
 type Request struct {
 	Method      Method
-	BaseURL     string
+	BaseURL     string // e.g. https://api.pivotsecurity.com
 	Headers     map[string]string
 	QueryParams map[string]string
 	Body        []byte
@@ -112,9 +113,17 @@ func Send(request Request) (*Response, error) {
 	return DefaultClient.Send(request)
 }
 
+// The following functions enable the ability to define a
+// custom HTTP Client
+
 // MakeRequest makes the API call.
 func (c *Client) MakeRequest(req *http.Request) (*http.Response, error) {
 	return c.HTTPClient.Do(req)
+}
+
+// Deprecated: API supports old implementation
+func (c *Client) API(request Request) (*Response, error) {
+	return c.Send(request)
 }
 
 // Send will build your request, make the request, and build your response.
@@ -125,10 +134,12 @@ func (c *Client) Send(request Request) (*Response, error) {
 		return nil, err
 	}
 
+	// Build the HTTP client and make the request.
 	res, err := c.MakeRequest(req)
 	if err != nil {
 		return nil, err
 	}
 
+	// Build Response object.
 	return BuildResponse(res)
 }
