@@ -1,4 +1,5 @@
-# pivotsecurity-Go
+# Pivot Security - Go
+
 GO API interface for Pivot Security API.
 
 All updates to this library is documented in our [CHANGELOG](https://github.com/pivotsecurity/pivotsecurity-go/blob/master/CHANGELOG.md).
@@ -69,6 +70,6 @@ func main() {
 
 <a name="license"></a>
 # License
-[The MIT License (MIT)](LICENSE.txt)
+[The MIT License (MIT)](LICENSE)
 
 
