@@ -33,7 +33,7 @@ cp .env_sample .env
 
 ### Environment Variable
 
-Update the development environment with your [SENDGRID_API_KEY](https://app.sendgrid.com/settings/api_keys), for example:
+Update the development environment with your keys(https://api.pivotsecurity.com/settings/), for example:
 
 ```bash
 echo "export PUBLIC_API_KEY='YOUR_PUBLIC_API_KEY'" > pivotsecurity.env
