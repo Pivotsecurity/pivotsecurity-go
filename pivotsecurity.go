@@ -9,7 +9,7 @@ import (
 	"encoding/base64"
 )
 
-const host = "http://localhost:8080/api/"
+const host = "https://api.pivotsecurity.com/api/"
 
 const OP_CREATE= host + "account/create";
 const OP_INFO = host + "account/info";
@@ -22,6 +22,10 @@ const OP_LOCK = host + "account/lock";
 const OP_UNLOCK = host + "account/unlock";
 const OP_TRAIN_ML = host + "account/trainml";
 const OP_TEST_ML = host + "account/testml";
+const OP_AUTH_META = host + "account/authwithmetadata";
+const OP_SEND_AUTH_META = host + "account/sendauthwithmetadata";
+const OP_VERIFY_META = host + "account/verifywithmetadata";
+
 const OP_AUTH = host + "customer/auth";
 const OP_VALIDATE = host + "customer/verify";
 
@@ -294,6 +298,48 @@ func TestMl(uid string, email string, data string) (*Response, error) {
 	
 	request := Request{
 		BaseURL:     OP_TEST_ML,
+		Headers:     Headers,
+		Body:        Body,
+	}
+	
+	return Send(request)
+}
+func AuthWithMetadata(uid string, email string, metadata string) (*Response, error) {
+	Headers := make(map[string]string)
+	auth := base64.StdEncoding.EncodeToString([]byte(os.Getenv("PRIVATE_API_KEY") +":"))
+	Headers["Authorization"] = "Basic " + auth
+	var Body = []byte(`{"uid":"`+ uid +`", "email":"` + email +`", "metadata":"` + metadata + `"}`)
+	
+	request := Request{
+		BaseURL:     OP_AUTH_META,
+		Headers:     Headers,
+		Body:        Body,
+	}
+	
+	return Send(request)
+}
+func SendAuthWithMetadata(uid string, email string, metadata string) (*Response, error) {
+	Headers := make(map[string]string)
+	auth := base64.StdEncoding.EncodeToString([]byte(os.Getenv("PRIVATE_API_KEY") +":"))
+	Headers["Authorization"] = "Basic " + auth
+	var Body = []byte(`{"uid":"`+ uid +`", "email":"` + email +`", "metadata":"` + metadata + `"}`)
+	
+	request := Request{
+		BaseURL:     OP_SEND_AUTH_META,
+		Headers:     Headers,
+		Body:        Body,
+	}
+	
+	return Send(request)
+}
+func TestMl(uid string, email string, code string) (*Response, error) {
+	Headers := make(map[string]string)
+	auth := base64.StdEncoding.EncodeToString([]byte(os.Getenv("PRIVATE_API_KEY") +":"))
+	Headers["Authorization"] = "Basic " + auth
+	var Body = []byte(`{"uid":"`+ uid +`", "email":"` + email +`", "code":"` + code + `"}`)
+	
+	request := Request{
+		BaseURL:     OP_VERIFY_META,
 		Headers:     Headers,
 		Body:        Body,
 	}
