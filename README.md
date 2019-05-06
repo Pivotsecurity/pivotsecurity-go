@@ -1,5 +1,7 @@
 # Pivot Security - Go
 
+Read full docs: https://github.com/Pivotsecurity/pivotsecurity-go/tree/master/doc 
+
 GO API interface for Pivot Security API.
 
 All updates to this library is documented in our [CHANGELOG](https://github.com/pivotsecurity/pivotsecurity-go/blob/master/CHANGELOG.md).
