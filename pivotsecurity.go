@@ -25,6 +25,7 @@ const OP_TEST_ML = host + "account/testml";
 const OP_AUTH_META = host + "account/authwithmetadata";
 const OP_SEND_AUTH_META = host + "account/sendauthwithmetadata";
 const OP_VERIFY_META = host + "account/verifywithmetadata";
+const OP_VERIFY_SESSION = host + "account/verifysession";
 
 const OP_AUTH = host + "customer/auth";
 const OP_VALIDATE = host + "customer/verify";
@@ -332,7 +333,7 @@ func SendAuthWithMetadata(uid string, email string, metadata string) (*Response,
 	
 	return Send(request)
 }
-func TestMl(uid string, email string, code string) (*Response, error) {
+func VerifyWithMetadata(uid string, email string, code string) (*Response, error) {
 	Headers := make(map[string]string)
 	auth := base64.StdEncoding.EncodeToString([]byte(os.Getenv("PRIVATE_API_KEY") +":"))
 	Headers["Authorization"] = "Basic " + auth
@@ -340,6 +341,20 @@ func TestMl(uid string, email string, code string) (*Response, error) {
 	
 	request := Request{
 		BaseURL:     OP_VERIFY_META,
+		Headers:     Headers,
+		Body:        Body,
+	}
+	
+	return Send(request)
+}
+func VerifySession(uid string, email string, sessionid string) (*Response, error) {
+	Headers := make(map[string]string)
+	auth := base64.StdEncoding.EncodeToString([]byte(os.Getenv("PRIVATE_API_KEY") +":"))
+	Headers["Authorization"] = "Basic " + auth
+	var Body = []byte(`{"uid":"`+ uid +`", "email":"` + email +`", "sessionid":"` + sessionid + `"}`)
+	
+	request := Request{
+		BaseURL:     OP_VERIFY_SESSION,
 		Headers:     Headers,
 		Body:        Body,
 	}
