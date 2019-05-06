@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=11' />
+    <title>Pivot Security API Documentation</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link href='css/base.css' rel='stylesheet' />
+    <link href='css/style.css' rel='stylesheet' />
+    <link href='css/railscasts.css' rel='stylesheet' />
+  </head>
+  <body>
+    <!--START--><div id='app'><div class="container unlimiter" data-reactroot="" data-reactid="1" data-react-checksum="-149380716"><div class="fixed-top fixed-right space-left16" data-reactid="2"><div class="fill-light col6 pin-right" data-reactid="3"></div></div><div class="space-top5 scroll-styled overflow-auto pad1 width16 sidebar fixed-left fill-dark dark" data-reactid="4"><div class="pad0x small" data-reactid="5"><div class="small pad0x quiet space-top1" data-reactid="6">Introduction</div><a href="#multiple-authentication" class="line-height15 pad0x pad00y quiet block " data-reactid="7">Multiple Authentication</a><div class="small pad0x quiet space-top1" data-reactid="8">API basics</div><a href="#api-reference" class="line-height15 pad0x pad00y quiet block " data-reactid="9">API Reference</a><a href="#account-api" class="line-height15 pad0x pad00y quiet block " data-reactid="10">Account API</a><a href="#customer-api" class="line-height15 pad0x pad00y quiet block " data-reactid="11">Customer API</a></div></div><div class="space-left16" data-reactid="12"><div class="" data-reactid="13"><div class="clearfix" data-reactid="14"><div data-title="Multiple Authentication" class="keyline-top section contain clearfix " data-reactid="15"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="16"><h2 id="multiple-authentication">Multiple Authentication</h2>
+<p>“The only people who love usernames and passwords are hackers.” </p>
+<p>The use of multiple authentication factors to prove one's identity is based on the premise that an unauthorized actor is unlikely to be able to supply the factors required for access. If, in an authentication attempt, at least one of the components is missing or supplied incorrectly, the user's identity is not established with sufficient certainty and access to the asset (e.g., a building, or data) being protected by multi-factor authentication then remains blocked.</p>
+<p>How can you add early and reliably, yet providing a platform for future examination? Every IT manager dreads to ask these questions. They very well know, it would take months (if not years) to put a solution in place. You don’t have to with Pivot Security API.</p>
+<p>Pivot Security API is <strong>developer</strong> friendly <strong>multi-factor</strong> authentication api. With Machine Intelligence, every attempt to compromise end user account will be carefully avoided by placing security on users hands <strong>SMS</strong>, <strong>EMAIL</strong> or <strong>APP</strong> baked multi-factor authentication driven by API. Never have to worry about balancing <strong>usability</strong> vs <strong>security</strong>.</p>
+</div></div><div data-title="API Reference" class="keyline-top section contain clearfix " data-reactid="17"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="18"><h2 id="api-reference">API Reference</h2>
+<p>The Pivot Security API is organized around REST. Our API accepts form-encoded request bodies, returns JSON-encoded responses, and uses standard HTTP response codes, basic http authentication, and verbs.</p>
+<p>You can use the Pivot Security API in test mode, which does not affect your live data or security restrictions (like DDOS flagging etc.). The API key you use to authenticate the request determines whether the request is live mode or test mode.</p>
+</div></div><div data-title="Authentication" class="keyline-top section contain clearfix " data-reactid="19"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="20"><h3 id="authentication">Authentication</h3>
+<p>The Pivot Security API uses API keys to authenticate requests. You can view and manage your API keys in the Pivot Security Dashboard.</p>
+<p>All API requests must be made over HTTPS. Calls made over plain HTTP will fail. API requests without authentication will also fail.</p>
+</div></div><div data-title="Errors" class="keyline-top section contain clearfix " data-reactid="21"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="22"><h3 id="errors">Errors</h3>
+<p>Pivot Security API uses conventional HTTP response codes to indicate the success or failure of an API request. Each response will return with or without content based on state of error or request data.</p>
+</div></div><div data-title="Handling errors" class="keyline-top section contain clearfix " data-reactid="23"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="24"><h3 id="handling-errors">Handling errors</h3>
+<p>Our API libraries raise exceptions for many reasons, such as a failed data validation, invalid parameters, authentication errors, and network unavailability. We recommend writing code that gracefully handles all possible API exceptions.</p>
+</div></div><div data-title="Metadata" class="keyline-top section contain clearfix " data-reactid="25"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="26"><h3 id="metadata">Metadata</h3>
+<p>Metadata is useful for sending additional, structured information on an object, especially when using API from your own application. If you are using our libraries, the metadata is already set for you, but if you choose, you can modify to suit your needs. </p>
+<p>Metadata is crucial data to determine whether the customer is accessing as a end user or using automated scripts to target user authentication.</p>
+</div></div><div data-title="Account API" class="keyline-top section contain clearfix " data-reactid="27"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="28"><h2 id="account-api">Account API</h2>
+<p>The Pivot Security API is organized around REST. Our API accepts form-encoded request bodies, returns JSON-encoded responses, and uses standard HTTP response codes, basic http authentication, and verbs.</p>
+<p>You can use the Pivot Security API in test mode, which does not affect your live data or security restrictions (like DDOS flagging etc.). The API key you use to authenticate the request determines whether the request is live mode or test mode.</p>
+<p><strong><em>Use private key for the customer api calls.</em></strong></p>
+</div></div><div data-title="Create Customer" class="keyline-top section contain clearfix " data-reactid="29"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="30"><h3 id="create-customer">Create Customer</h3>
+<p>Creates a new, customer object. Verification channel can be email, sms or mobile APP. </p>
+<p><strong>Example request</strong>
+Sample curl request</p>
+<p><strong><em>Example request body</em></strong></p>
+<table>
+<thead>
+<tr>
+<th>***Property</th>
+<th>Description ***</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uid</code></td>
+<td>(Optional) customer ID</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>(Optional) Customer email address</td>
+</tr>
+<tr>
+<td><code>channel</code></td>
+<td>(required) Verification channel, SMS, EMAIL or APP</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Example Success response</em></strong></p>
+</div><div class="space-bottom4 col6 pad2 prose clip fill-light space-top5" data-reactid="31"><div class='endpoint dark fill-dark round '>
+      <div class='round-left pad0y pad1x fill-lighten0 code small endpoint-method'>POST</div>
+      <div class='pad0 code small endpoint-url'>/api/customer/create</div>
+    </div>
+<pre class='hljs'>curl -X POST https://api.pivtosecurity.com/api/customer/create -X POST -u <span class="hljs-string">'&lt;PUBLIC-API-KEY&gt;:'</span> -d <span class="hljs-string">'{"email":"user@server.com", "channel":"EMAIL"}'</span> -H <span class="hljs-string">"Accept: application/json"</span></pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"email"</span>: <span class="hljs-string">"email@server.com"</span>, 
+  <span class="hljs-attr">"channel"</span>:<span class="hljs-string">"EMAIL"</span>
+}</pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"status"</span>: <span class="hljs-string">"Success"</span>
+}</pre>
+</div></div><div data-title="Account Info" class="keyline-top section contain clearfix " data-reactid="32"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="33"><h3 id="account-info">Account Info</h3>
+<p>Account information API call returns the customer data. </p>
+<p><strong><em>Example request</em></strong> </p>
+<table>
+<thead>
+<tr>
+<th>***Property</th>
+<th>Description***</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uid</code></td>
+<td>(Optional) customer ID</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>(Optional) Customer email address</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Example response</em></strong> </p>
+<p><strong><em>Example success HTTP response</em></strong> </p>
+<p><strong><em>Example failure HTTP response</em></strong> </p>
+</div><div class="space-bottom4 col6 pad2 prose clip fill-light space-top5" data-reactid="34"><div class='endpoint dark fill-dark round '>
+      <div class='round-left pad0y pad1x fill-lighten0 code small endpoint-method'>POST</div>
+      <div class='pad0 code small endpoint-url'>/api/account/info</div>
+    </div>
+<pre class='hljs'>$ curl https://api.pivtosecurity.com/api/account/info -X POST -u <span class="hljs-string">'&lt;PRIVATE-API-KEY&gt;:'</span> -d <span class="hljs-string">'{"email":"user@server.com"}'</span> -H <span class="hljs-string">"Accept: application/json"</span></pre>
+<pre class='hljs'>[
+  {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-string">"1"</span>,
+    <span class="hljs-attr">"email"</span>: <span class="hljs-string">"user@server.com"</span>,
+    <span class="hljs-attr">"channel"</span>: <span class="hljs-string">"EMAIL"</span>,
+    <span class="hljs-attr">"lastlogin"</span>: <span class="hljs-string">"2019-03-07 10:03:27"</span>,
+    <span class="hljs-attr">"keeplogin"</span>: <span class="hljs-string">"0"</span>,
+    <span class="hljs-attr">"ip"</span>: <span class="hljs-string">"xx.12.87.91"</span>,
+    <span class="hljs-attr">"browser"</span>: <span class="hljs-string">"Firefox"</span>,
+    <span class="hljs-attr">"version"</span>: <span class="hljs-string">"59.0"</span>,
+    <span class="hljs-attr">"platform"</span>: <span class="hljs-string">"Linux"</span>,
+    <span class="hljs-attr">"language"</span>: <span class="hljs-string">"en"</span>
+  }
+]</pre>
+<pre class='hljs'>HTTP 200</pre>
+<pre class='hljs'>HTTP 204</pre>
+</div></div><div data-title="Customer Risk Score" class="keyline-top section contain clearfix " data-reactid="35"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="36"><h3 id="customer-risk-score">Customer Risk Score</h3>
+<p>This API returns detailed information about the customer risk. The risk object containts necessery information which can be used to assess the customer risk. If the customer is using a varous devices for loggin in and/or the accessing from a risk zone (IPS's), risk can be higher.</p>
+<p><strong><em>Example request</em></strong> </p>
+<p><strong><em>Example request body</em></strong></p>
+<table>
+<thead>
+<tr>
+<th>***Property</th>
+<th>Description***</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uid</code></td>
+<td>(Optional) customer ID</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>(Optional) Customer email address</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Example response</em></strong> </p>
+<p><strong><em>Example success HTTP response</em></strong> </p>
+<p><strong><em>Example failure response</em></strong></p>
+<p><strong><em>Example failure response HTTP code</em></strong></p>
+</div><div class="space-bottom4 col6 pad2 prose clip fill-light space-top5" data-reactid="37"><div class='endpoint dark fill-dark round '>
+      <div class='round-left pad0y pad1x fill-lighten0 code small endpoint-method'>GET</div>
+      <div class='pad0 code small endpoint-url'>/api/account/riskscore</div>
+    </div>
+<pre class='hljs'>curl https://api.pivtosecurity.com/api/account/riskscore -X POST -u <span class="hljs-string">'&lt;PRIVATE-API-KEY&gt;:'</span> -d <span class="hljs-string">'{"email":"user@server.com"}'</span> -H <span class="hljs-string">"Accept: application/json"</span></pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"email"</span>: <span class="hljs-string">"email@server.com"</span>
+}</pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"Risk Score"</span>: <span class="hljs-number">29</span>,
+  <span class="hljs-attr">"Detailed"</span>: {
+    <span class="hljs-attr">"Remote Access"</span>: <span class="hljs-number">48</span>,
+    <span class="hljs-attr">"Platform"</span>: <span class="hljs-number">41</span>,
+    <span class="hljs-attr">"Browser"</span>: <span class="hljs-number">28</span>,
+    <span class="hljs-attr">"IP"</span>: <span class="hljs-number">10</span>
+  }
+}</pre>
+<pre class='hljs'>HTTP 200</pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"status"</span>: <span class="hljs-string">"Authentication Error"</span>
+}</pre>
+<pre class='hljs'>HTTP 204</pre>
+</div></div><div data-title="QR code" class="keyline-top section contain clearfix " data-reactid="38"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="39"><h3 id="qr-code">QR code</h3>
+<p>This API returns QR code for the customer app set-up. Using mobile app (like Google authenticator or FreeOTP), the QR code provides means to generate security codes outside the application, providing saperate channel for verification.</p>
+<p><strong><em>Example request</em></strong> </p>
+<p><strong><em>Example request body</em></strong></p>
+<table>
+<thead>
+<tr>
+<th>***Property</th>
+<th>Description***</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uid</code></td>
+<td>(Optional) customer ID</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>(Optional) Customer email address</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Example response</em></strong> </p>
+<p><strong><em>Example success HTTP response</em></strong> </p>
+<p><strong><em>Example failure response</em></strong></p>
+<p><strong><em>Example failure response HTTP code</em></strong></p>
+</div><div class="space-bottom4 col6 pad2 prose clip fill-light space-top5" data-reactid="40"><div class='endpoint dark fill-dark round '>
+      <div class='round-left pad0y pad1x fill-lighten0 code small endpoint-method'>GET</div>
+      <div class='pad0 code small endpoint-url'>/api/account/qrcode</div>
+    </div>
+<pre class='hljs'>curl https://api.pivtosecurity.com/api/account/qrcode -X POST -u <span class="hljs-string">'&lt;PRIVATE-API-KEY&gt;:'</span> -d <span class="hljs-string">'{"email":"user@server.com"}'</span> -H <span class="hljs-string">"Accept: application/json"</span></pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"email"</span>: <span class="hljs-string">"email@server.com"</span>
+}</pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"qrcode"</span>: <span class="hljs-string">"https://chart.googleapis.com/chart?chs=200x200&amp;chld=M|0&amp;cht=qr&amp;chl=otpauth%3A%2F%2Ftotp%dsdfsd%2540pcs.com%3Falgorithm%3Dsha256%26period%3D1800%26secret%sdfdsfsdgsdgdsg"</span>
+}</pre>
+<pre class='hljs'>HTTP 200</pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"status"</span>: <span class="hljs-string">"Authentication Error"</span>
+}</pre>
+<pre class='hljs'>HTTP 204</pre>
+</div></div><div data-title="Auth code" class="keyline-top section contain clearfix " data-reactid="41"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="42"><h3 id="auth-code">Auth code</h3>
+<p>This API returns one time authentication code. Using this API, the code generated can be used to send to customer on your app or saperate channle (ex. a chat bot can use the api to verify the customer)</p>
+<p><strong><em>Example request</em></strong> </p>
+<p><strong><em>Example request body</em></strong></p>
+<table>
+<thead>
+<tr>
+<th>***Property</th>
+<th>Description***</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uid</code></td>
+<td>(Optional) customer ID</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>(Optional) Customer email address</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Example response</em></strong> </p>
+<p><strong><em>Example success HTTP response</em></strong> </p>
+<p><strong><em>Example failure response</em></strong></p>
+<p><strong><em>Example failure response HTTP code</em></strong></p>
+</div><div class="space-bottom4 col6 pad2 prose clip fill-light space-top5" data-reactid="43"><div class='endpoint dark fill-dark round '>
+      <div class='round-left pad0y pad1x fill-lighten0 code small endpoint-method'>GET</div>
+      <div class='pad0 code small endpoint-url'>/api/account/authcode</div>
+    </div>
+<pre class='hljs'>curl https://api.pivtosecurity.com/api/account/authcode -X POST -u <span class="hljs-string">'&lt;PRIVATE-API-KEY&gt;:'</span> -d <span class="hljs-string">'{"email":"user@server.com"}'</span> -H <span class="hljs-string">"Accept: application/json"</span></pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"email"</span>: <span class="hljs-string">"email@server.com"</span>
+}</pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"authcode"</span>: <span class="hljs-string">"833001"</span>
+}</pre>
+<pre class='hljs'>HTTP 200</pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"status"</span>: <span class="hljs-string">"Authentication Error"</span>
+}</pre>
+<pre class='hljs'>HTTP 204</pre>
+</div></div><div data-title="Logs" class="keyline-top section contain clearfix " data-reactid="44"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="45"><h3 id="logs">Logs</h3>
+<p>This API returns customer access logs.</p>
+<p><strong><em>Example request</em></strong> </p>
+<p><strong><em>Example request body</em></strong></p>
+<table>
+<thead>
+<tr>
+<th>***Property</th>
+<th>Description***</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uid</code></td>
+<td>(Optional) customer ID</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>(Optional) Customer email address</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Example response</em></strong> </p>
+<p><strong><em>Example success HTTP response</em></strong> </p>
+<p><strong><em>Example failure response</em></strong></p>
+<p><strong><em>Example failure response HTTP code</em></strong></p>
+</div><div class="space-bottom4 col6 pad2 prose clip fill-light space-top5" data-reactid="46"><div class='endpoint dark fill-dark round '>
+      <div class='round-left pad0y pad1x fill-lighten0 code small endpoint-method'>GET</div>
+      <div class='pad0 code small endpoint-url'>/api/account/logs</div>
+    </div>
+<pre class='hljs'>curl https://api.pivtosecurity.com/api/account/logs -X POST -u <span class="hljs-string">'&lt;PRIVATE-API-KEY&gt;:'</span> -d <span class="hljs-string">'{"email":"user@server.com"}'</span> -H <span class="hljs-string">"Accept: application/json"</span></pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"email"</span>: <span class="hljs-string">"email@server.com"</span>
+}</pre>
+<pre class='hljs'>[
+  {
+    <span class="hljs-attr">"ip"</span>: <span class="hljs-string">"xx.xx.xx.211"</span>,
+    <span class="hljs-attr">"browser"</span>: <span class="hljs-string">"Firefox"</span>,
+    <span class="hljs-attr">"version"</span>: <span class="hljs-string">"65.0"</span>,
+    <span class="hljs-attr">"platform"</span>: <span class="hljs-string">"Macintosh"</span>,
+    <span class="hljs-attr">"language"</span>: <span class="hljs-string">"en-US,en;q=0.5"</span>,
+    <span class="hljs-attr">"logged"</span>: <span class="hljs-string">"2019-03-12 16:52:11"</span>
+  },
+    {
+    <span class="hljs-attr">"ip"</span>: <span class="hljs-string">"xx.xx.xx.211"</span>,
+    <span class="hljs-attr">"browser"</span>: <span class="hljs-string">"Firefox"</span>,
+    <span class="hljs-attr">"version"</span>: <span class="hljs-string">"65.0"</span>,
+    <span class="hljs-attr">"platform"</span>: <span class="hljs-string">"Macintosh"</span>,
+    <span class="hljs-attr">"language"</span>: <span class="hljs-string">"en-US,en;q=0.5"</span>,
+    <span class="hljs-attr">"logged"</span>: <span class="hljs-string">"2019-03-12 16:55:11"</span>
+  },
+    {
+    <span class="hljs-attr">"ip"</span>: <span class="hljs-string">"xx.xx.xx.212"</span>,
+    <span class="hljs-attr">"browser"</span>: <span class="hljs-string">"Firefox"</span>,
+    <span class="hljs-attr">"version"</span>: <span class="hljs-string">"65.0"</span>,
+    <span class="hljs-attr">"platform"</span>: <span class="hljs-string">"Macintosh"</span>,
+    <span class="hljs-attr">"language"</span>: <span class="hljs-string">"en-US,en;q=0.5"</span>,
+    <span class="hljs-attr">"logged"</span>: <span class="hljs-string">"2019-03-12 16:59:11"</span>
+  }
+]</pre>
+<pre class='hljs'>HTTP 200</pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"status"</span>: <span class="hljs-string">"Authentication Error"</span>
+}</pre>
+<pre class='hljs'>HTTP 204</pre>
+</div></div><div data-title="Lock Customer" class="keyline-top section contain clearfix " data-reactid="47"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="48"><h3 id="lock-customer">Lock Customer</h3>
+<p>This API can be used to lock the account. If the customer account is locked, the authentication will fail. You can use this api to stop potential DDOS attacks.</p>
+<p><strong><em>Example request</em></strong> </p>
+<p><strong><em>Example request body</em></strong></p>
+<table>
+<thead>
+<tr>
+<th>***Property</th>
+<th>Description***</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uid</code></td>
+<td>(Optional) customer ID</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>(Optional) Customer email address</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Example response</em></strong> </p>
+<p><strong><em>Example success HTTP response</em></strong> </p>
+<p><strong><em>Example failure response</em></strong></p>
+<p><strong><em>Example failure response HTTP code</em></strong></p>
+</div><div class="space-bottom4 col6 pad2 prose clip fill-light space-top5" data-reactid="49"><div class='endpoint dark fill-dark round '>
+      <div class='round-left pad0y pad1x fill-lighten0 code small endpoint-method'>GET</div>
+      <div class='pad0 code small endpoint-url'>/api/account/lock</div>
+    </div>
+<pre class='hljs'>curl https://api.pivtosecurity.com/api/account/lock -X POST -u <span class="hljs-string">'&lt;PRIVATE-API-KEY&gt;:'</span> -d <span class="hljs-string">'{"email":"user@server.com"}'</span> -H <span class="hljs-string">"Accept: application/json"</span></pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"email"</span>: <span class="hljs-string">"email@server.com"</span>
+}</pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"Status"</span>: <span class="hljs-string">"Locked"</span>
+}</pre>
+<pre class='hljs'>HTTP 200</pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"status"</span>: <span class="hljs-string">"Authentication Error"</span>
+}</pre>
+<pre class='hljs'>HTTP 204</pre>
+</div></div><div data-title="Unlock Customer" class="keyline-top section contain clearfix " data-reactid="50"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="51"><h3 id="unlock-customer">Unlock Customer</h3>
+<p>This API can be used to unlock customer account.</p>
+<p><strong><em>Example request</em></strong> </p>
+<p><strong><em>Example request body</em></strong></p>
+<table>
+<thead>
+<tr>
+<th>***Property</th>
+<th>Description***</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uid</code></td>
+<td>(Optional) customer ID</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>(Optional) Customer email address</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Example response</em></strong> </p>
+<p><strong><em>Example success HTTP response</em></strong> </p>
+<p><strong><em>Example failure response</em></strong></p>
+<p><strong><em>Example failure response HTTP code</em></strong></p>
+</div><div class="space-bottom4 col6 pad2 prose clip fill-light space-top5" data-reactid="52"><div class='endpoint dark fill-dark round '>
+      <div class='round-left pad0y pad1x fill-lighten0 code small endpoint-method'>GET</div>
+      <div class='pad0 code small endpoint-url'>/api/account/unlock</div>
+    </div>
+<pre class='hljs'>curl https://api.pivtosecurity.com/api/account/unlock -X POST -u <span class="hljs-string">'&lt;PRIVATE-API-KEY&gt;:'</span> -d <span class="hljs-string">'{"email":"user@server.com"}'</span> -H <span class="hljs-string">"Accept: application/json"</span></pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"email"</span>: <span class="hljs-string">"email@server.com"</span>
+}</pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"Status"</span>: <span class="hljs-string">"Unlocked"</span>
+}</pre>
+<pre class='hljs'>HTTP 200</pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"status"</span>: <span class="hljs-string">"Authentication Error"</span>
+}</pre>
+<pre class='hljs'>HTTP 204</pre>
+</div></div><div data-title="Machine Learning" class="keyline-top section contain clearfix " data-reactid="53"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="54"><h3 id="machine-learning">Machine Learning</h3>
+<p>Use this API to train machine learning data filter. This api use same structure and process as the Admin Panel log file upload and training process.</p>
+<p>Process your own log files, upload IP adress (Long value), browser, platform and status value is csv format with semi-colon (;) row delimiter. If you have other formats, feel free to contact our support, we can update formats suitable for your data.</p>
+<p><strong><em>Example request</em></strong> </p>
+<table>
+<thead>
+<tr>
+<th>***Property</th>
+<th>Description***</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uid</code></td>
+<td>(Optional) customer ID</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>(Optional) Customer email address</td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>(required) csv data for machine learning</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Example response</em></strong> </p>
+<p><strong><em>Example success HTTP response</em></strong> </p>
+<p><strong><em>Example failure HTTP response</em></strong> </p>
+</div><div class="space-bottom4 col6 pad2 prose clip fill-light space-top5" data-reactid="55"><div class='endpoint dark fill-dark round '>
+      <div class='round-left pad0y pad1x fill-lighten0 code small endpoint-method'>POST</div>
+      <div class='pad0 code small endpoint-url'>/api/account/trainml</div>
+    </div>
+<pre class='hljs'>$ curl https://api.pivtosecurity.com/api/account/trainml -X POST -u <span class="hljs-string">'&lt;PRIVATE-API-KEY&gt;:'</span> -d <span class="hljs-string">'{"email":"user@server.com", "data": "12412,1,2,0;412344,2,1,1"}'</span> -H <span class="hljs-string">"Accept: application/json"</span></pre>
+<pre class='hljs'>[
+  {
+    <span class="hljs-attr">"status"</span>: <span class="hljs-string">"success"</span>
+  }
+]</pre>
+<pre class='hljs'>HTTP 200</pre>
+<pre class='hljs'>HTTP 204</pre>
+</div></div><div data-title="Machine Learning Test" class="keyline-top section contain clearfix " data-reactid="56"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="57"><h3 id="machine-learning-test">Machine Learning Test</h3>
+<p>Use this API to test machine learning data filter. This api use same structure and process as the Admin Panel log file upload and training process.</p>
+<p><strong><em>Example request</em></strong> </p>
+<table>
+<thead>
+<tr>
+<th>***Property</th>
+<th>Description***</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uid</code></td>
+<td>(Optional) customer ID</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>(Optional) Customer email address</td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>(required) csv data for machine learning testing</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Example response</em></strong> </p>
+<p>or</p>
+<p><strong><em>Example success HTTP response</em></strong> </p>
+<p><strong><em>Example failure HTTP response</em></strong> </p>
+</div><div class="space-bottom4 col6 pad2 prose clip fill-light space-top5" data-reactid="58"><div class='endpoint dark fill-dark round '>
+      <div class='round-left pad0y pad1x fill-lighten0 code small endpoint-method'>POST</div>
+      <div class='pad0 code small endpoint-url'>/api/account/testml</div>
+    </div>
+<pre class='hljs'>$ curl https://api.pivtosecurity.com/api/account/testml -X POST -u <span class="hljs-string">'&lt;PRIVATE-API-KEY&gt;:'</span> -d <span class="hljs-string">'{"email":"user@server.com", "data": "12412,1,2"}'</span> -H <span class="hljs-string">"Accept: application/json"</span></pre>
+<pre class='hljs'>[
+  {
+    <span class="hljs-attr">"status"</span>: <span class="hljs-string">"0"</span>
+  }
+]</pre>
+<pre class='hljs'>[
+  {
+    <span class="hljs-attr">"status"</span>: <span class="hljs-string">"1"</span>
+  }
+]</pre>
+<pre class='hljs'>HTTP 200</pre>
+<pre class='hljs'>HTTP 204</pre>
+</div></div><div data-title="Auth Code with Metadata" class="keyline-top section contain clearfix " data-reactid="59"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="60"><h3 id="auth-code-with-metadata">Auth Code with Metadata</h3>
+<p>Use this API to store arbitrary data (ex. form data) until customer confirms with auth code. </p>
+<p><strong><em>Example request</em></strong> </p>
+<table>
+<thead>
+<tr>
+<th>***Property</th>
+<th>Description***</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uid</code></td>
+<td>(Optional) customer ID</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>(Optional) Customer email address</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td>(Optional) meta data to be saved temporarily</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Example response</em></strong> </p>
+<p><strong><em>Example success HTTP response</em></strong> </p>
+<p><strong><em>Example failure HTTP response</em></strong> </p>
+</div><div class="space-bottom4 col6 pad2 prose clip fill-light space-top5" data-reactid="61"><div class='endpoint dark fill-dark round '>
+      <div class='round-left pad0y pad1x fill-lighten0 code small endpoint-method'>POST</div>
+      <div class='pad0 code small endpoint-url'>/api/account/authwtihmetadata</div>
+    </div>
+<pre class='hljs'>$ curl https://api.pivtosecurity.com/api/account/authwtihmetadata -X POST -u <span class="hljs-string">'&lt;PRIVATE-API-KEY&gt;:'</span> -d <span class="hljs-string">'{"email":"user@server.com", "metadata": "documentid:12445"}'</span> -H <span class="hljs-string">"Accept: application/json"</span></pre>
+<pre class='hljs'>[
+  {
+    <span class="hljs-attr">"status"</span>: <span class="hljs-string">"success"</span>,
+    <span class="hljs-attr">"code"</span> : <span class="hljs-string">"124142"</span>
+  }
+]</pre>
+<pre class='hljs'>HTTP 200</pre>
+<pre class='hljs'>HTTP 204</pre>
+</div></div><div data-title="Send Auth Code with Metadata" class="keyline-top section contain clearfix " data-reactid="62"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="63"><h3 id="send-auth-code-with-metadata">Send Auth Code with Metadata</h3>
+<p>Use this API to store arbitrary data (ex. form data) until customer confirms with auth code. This api will send the auth code to customer via default channel.</p>
+<p><strong><em>Example request</em></strong> </p>
+<table>
+<thead>
+<tr>
+<th>***Property</th>
+<th>Description***</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uid</code></td>
+<td>(Optional) customer ID</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>(Optional) Customer email address</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td>(Optional) meta data to be saved temporarily</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Example response</em></strong> </p>
+<p><strong><em>Example success HTTP response</em></strong> </p>
+<p><strong><em>Example failure HTTP response</em></strong> </p>
+</div><div class="space-bottom4 col6 pad2 prose clip fill-light space-top5" data-reactid="64"><div class='endpoint dark fill-dark round '>
+      <div class='round-left pad0y pad1x fill-lighten0 code small endpoint-method'>POST</div>
+      <div class='pad0 code small endpoint-url'>/api/account/sendauthwtihmetadata</div>
+    </div>
+<pre class='hljs'>$ curl https://api.pivtosecurity.com/api/account/sendauthwithmetadata -X POST -u <span class="hljs-string">'&lt;PRIVATE-API-KEY&gt;:'</span> -d <span class="hljs-string">'{"email":"user@server.com", "metadata": "documentid:12445"}'</span> -H <span class="hljs-string">"Accept: application/json"</span></pre>
+<pre class='hljs'>[
+  {
+    <span class="hljs-attr">"status"</span>: <span class="hljs-string">"success"</span>,
+    <span class="hljs-attr">"code"</span> : <span class="hljs-string">"124142"</span>
+  }
+]</pre>
+<pre class='hljs'>HTTP 200</pre>
+<pre class='hljs'>HTTP 204</pre>
+</div></div><div data-title="Verify Auth Code and Get the stored Metadata" class="keyline-top section contain clearfix " data-reactid="65"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="66"><h3 id="verify-auth-code-and-get-the-stored-metadata">Verify Auth Code and Get the stored Metadata</h3>
+<p>Use this API to get metadata stored previously. The metadata will be purged automatically if the code isn't validated with-in 30 min. If longer periods needed, then use system configuration to set the higher value.</p>
+<p><strong><em>Example request</em></strong> </p>
+<table>
+<thead>
+<tr>
+<th>***Property</th>
+<th>Description***</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uid</code></td>
+<td>(Optional) customer ID</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>(Optional) Customer email address</td>
+</tr>
+<tr>
+<td><code>code</code></td>
+<td>(required) csv data for machine learning testing</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Example response</em></strong> </p>
+<p>or</p>
+<p><strong><em>Example success HTTP response</em></strong> </p>
+<p><strong><em>Example failure HTTP response</em></strong> </p>
+</div><div class="space-bottom4 col6 pad2 prose clip fill-light space-top5" data-reactid="67"><div class='endpoint dark fill-dark round '>
+      <div class='round-left pad0y pad1x fill-lighten0 code small endpoint-method'>POST</div>
+      <div class='pad0 code small endpoint-url'>/api/account/verifywithmetadata</div>
+    </div>
+<pre class='hljs'>$ curl https://api.pivtosecurity.com/api/account/verifywithmetadata -X POST -u <span class="hljs-string">'&lt;PRIVATE-API-KEY&gt;:'</span> -d <span class="hljs-string">'{"email":"user@server.com", "code": "124142"}'</span> -H <span class="hljs-string">"Accept: application/json"</span></pre>
+<pre class='hljs'>[
+  {
+    <span class="hljs-attr">"status"</span>: <span class="hljs-string">"0"</span>,
+    <span class="hljs-attr">"metadata"</span>: <span class="hljs-string">"documentid:12445"</span>
+  }
+]</pre>
+<pre class='hljs'>[
+  {
+    <span class="hljs-attr">"status"</span>: <span class="hljs-string">"1"</span>,
+    <span class="hljs-attr">"metadata"</span>: <span class="hljs-string">"documentid:12445"</span>
+  }
+]</pre>
+<pre class='hljs'>HTTP 200</pre>
+<pre class='hljs'>HTTP 204</pre>
+</div></div><div data-title="Customer API" class="keyline-top section contain clearfix " data-reactid="68"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="69"><h2 id="customer-api">Customer API</h2>
+<p><strong><em>Customer Authentication and Verification API.</em></strong> The authentication and verification API provides means to authenticate the customer on chosen channel.</p>
+<p><strong><em>Use public API key for these API calls.</em></strong></p>
+<p><strong><em>Example success response code</em></strong></p>
+<p><strong><em>Example failure response, if email already regisered</em></strong></p>
+<p><strong><em>Example failure response, if email validation failed</em></strong></p>
+</div><div class="space-bottom4 col6 pad2 prose clip fill-light space-top5" data-reactid="70"><pre class='hljs'>HTTP 201</pre>
+<pre class='hljs'>HTTP 204</pre>
+<pre class='hljs'>HTTP 406</pre>
+<pre class='hljs'>{
+    <span class="hljs-attr">"error"</span>: {
+       <span class="hljs-attr">"code"</span>: <span class="hljs-string">"406"</span>,
+       <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Invalid Email Address"</span>
+    }
+}</pre>
+</div></div><div data-title="Authenticate Customer" class="keyline-top section contain clearfix " data-reactid="71"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="72"><h3 id="authenticate-customer">Authenticate Customer</h3>
+<p>Creates new authentication code and sends to the customer on registered channel. </p>
+<p><strong><em>Example request</em></strong></p>
+<p><strong><em>Example request</em></strong></p>
+<p><strong><em>Example request body</em></strong> </p>
+<table>
+<thead>
+<tr>
+<th>***Property</th>
+<th>Description***</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uid</code></td>
+<td>(Optional) customer ID</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>(Optional) Customer email address</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Example response</em></strong> </p>
+<p><strong><em>Example success response</em></strong></p>
+<p><strong><em>Example failure response, if email validation failed </em></strong></p>
+</div><div class="space-bottom4 col6 pad2 prose clip fill-light space-top5" data-reactid="73"><div class='endpoint dark fill-dark round '>
+      <div class='round-left pad0y pad1x fill-lighten0 code small endpoint-method'>POST</div>
+      <div class='pad0 code small endpoint-url'>/api/customer/auth</div>
+    </div>
+<pre class='hljs'>curl -X POST https://api.pivtosecurity.com/api/customer/auth -X POST -u <span class="hljs-string">'&lt;PUBLIC-API-KEY&gt;:'</span> -d <span class="hljs-string">'{"email":"user@server.com"}'</span> -H <span class="hljs-string">"Accept: application/json"</span></pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"email"</span>: <span class="hljs-string">"email@server.com"</span>
+}</pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"status"</span>: <span class="hljs-string">"Success"</span>
+}</pre>
+<pre class='hljs'>HTTP 200</pre>
+<pre class='hljs'>HTTP 406</pre>
+<pre class='hljs'>{
+    <span class="hljs-attr">"error"</span>: {
+       <span class="hljs-attr">"code"</span>: <span class="hljs-string">"406"</span>,
+       <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Invalid Email Address"</span>
+    }
+}</pre>
+</div></div><div data-title="Verify Customer" class="keyline-top section contain clearfix " data-reactid="74"><div class="space-bottom8 col6 pad2x prose clip" data-reactid="75"><h3 id="verify-customer">Verify Customer</h3>
+<p>Verify customer API verifies the code against the code sent to customer. Validation code is active for pre-set duration. By default the pre-set duration for code validity is 30 min.</p>
+<p><strong><em>Example request</em></strong></p>
+<p><strong><em>Example request body</em></strong> </p>
+<table>
+<thead>
+<tr>
+<th>***Property</th>
+<th>Description***</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uid</code></td>
+<td>(Optional) customer ID</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>(Optional) Customer email address</td>
+</tr>
+<tr>
+<td><code>code</code></td>
+<td>(required) customer verification code</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Example response</em></strong> </p>
+<p><strong><em>Example success response</em></strong></p>
+<p><strong><em>Example failure response, if validation failed</em></strong></p>
+<p><strong><em>Example failure response</em></strong></p>
+</div><div class="space-bottom4 col6 pad2 prose clip fill-light space-top5" data-reactid="76"><div class='endpoint dark fill-dark round '>
+      <div class='round-left pad0y pad1x fill-lighten0 code small endpoint-method'>POST</div>
+      <div class='pad0 code small endpoint-url'>/api/customer/verify</div>
+    </div>
+<pre class='hljs'>curl -X POST https://api.pivtosecurity.com/api/customer/verify -X POST -u <span class="hljs-string">'&lt;PUBLIC-API-KEY&gt;:'</span> -d <span class="hljs-string">'{"email":"user@server.com", "code":"000000"}'</span> -H <span class="hljs-string">"Accept: application/json"</span></pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"email"</span>: <span class="hljs-string">"email@server.com"</span>,
+  <span class="hljs-attr">"code"</span>:<span class="hljs-string">"000000"</span>
+}</pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"status"</span>: <span class="hljs-string">"Success"</span>
+}</pre>
+<pre class='hljs'>HTTP 200</pre>
+<pre class='hljs'>HTTP 203</pre>
+<pre class='hljs'>{
+  <span class="hljs-attr">"status"</span>: <span class="hljs-string">"Verification failed"</span>
+}</pre>
+</div></div></div></div></div><div class="fixed-top space-left16" data-reactid="77"><div class="events fill-light bottom-shadow pad1 col6 pin-topright  " data-reactid="78"><div class="space-right1 small quiet inline" data-reactid="79">Show examples in:</div><div class="rounded-toggle inline short" data-reactid="80"><a class="strong active" data-reactid="81">cURL</a><a class="strong " data-reactid="82">cli</a><a class="strong " data-reactid="83">Python</a><a class="strong " data-reactid="84">JS</a><a class="strong " data-reactid="85">Java</a><a class="strong " data-reactid="86">ObjC</a><a class="strong " data-reactid="87">Swift</a></div><div class="fr pad0" data-reactid="88"><a title="Display as 1 column" style="cursor:pointer;" class="icon quiet caret-left pad0 fill-darken0 round" data-reactid="89"></a></div></div></div><div class="fill-dark dark bottom-shadow fixed-top pad0 width16" data-reactid="90"><a href="/" class="active space-top1 space-left1 pin-topleft icon round dark pad0 fill-red" data-reactid="91"></a><div class="strong small pad0
+          
+          space-left4 line-height15" data-reactid="92">Pivot Security API Documentation</div></div></div></div><!--STOP-->
+    <script src='bundle.js'></script>
+  </body>
+</html>
