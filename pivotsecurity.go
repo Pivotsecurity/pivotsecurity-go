@@ -27,6 +27,7 @@ const OP_SEND_AUTH_META = host + "account/sendauthwithmetadata";
 const OP_VERIFY_META = host + "account/verifywithmetadata";
 const OP_VERIFY_SESSION = host + "account/verifysession";
 
+const OP_CUST_CREATE = host + "customer/create";
 const OP_AUTH = host + "customer/auth";
 const OP_VALIDATE = host + "customer/verify";
 
@@ -361,6 +362,20 @@ func VerifySession(uid string, email string, sessionid string) (*Response, error
 	
 	return Send(request)
 }
+func CustomerCreate(uid string, email string, channel string) (*Response, error) {
+	Headers := make(map[string]string)
+	auth := base64.StdEncoding.EncodeToString([]byte(os.Getenv("PUBLIC_API_KEY") +":"))
+	Headers["Authorization"] = "Basic " + auth
+	var Body = []byte(`{"uid":"`+ uid +`", "email":"` + email +`", "channel":"` + channel + `"}`)
+	
+	request := Request{
+		BaseURL:     OP_CUST_CREATE,
+		Headers:     Headers,
+		Body:        Body,
+	}
+	
+	return Send(request)
+}
 func Auth(uid string, email string) (*Response, error) {
 	Headers := make(map[string]string)
 	auth := base64.StdEncoding.EncodeToString([]byte(os.Getenv("PUBLIC_API_KEY") +":"))
@@ -375,11 +390,11 @@ func Auth(uid string, email string) (*Response, error) {
 	
 	return Send(request)
 }
-func Validate(uid string, email string) (*Response, error) {
+func Validate(uid string, email string, code string) (*Response, error) {
 	Headers := make(map[string]string)
 	auth := base64.StdEncoding.EncodeToString([]byte(os.Getenv("PUBLIC_API_KEY") +":"))
 	Headers["Authorization"] = "Basic " + auth
-	var Body = []byte(`{"uid":"`+ uid +`", "email":"` + email +`"}`)
+	var Body = []byte(`{"uid":"`+ uid +`", "email":"` + email +`", "code":"` + code + `"}`)
 	
 	request := Request{
 		BaseURL:     OP_VALIDATE,
